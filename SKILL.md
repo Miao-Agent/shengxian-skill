@@ -120,7 +120,7 @@ Step 4: 同步三端 + hash验证
 
 ## Pitfalls
 
-- **指令库深度扫描** — `Get-ChildItem "F:/记忆中枢/指令库/" -Directory` 只返回顶层目录,遗漏子目录内大量脚本/分镜文件(实际200+文件)。**解法**: Step 1全盘扫描时递归`-Recurse -Filter "*.md"`并按关键字二次过滤(`Select-String -Pattern "脚本|分镜|口播|文案"`),确保不遗漏子目录资源
+- **指令库深度扫描** — `Get-ChildItem "<记忆中枢路径>/指令库/" -Directory` 只返回顶层目录,遗漏子目录内大量脚本/分镜文件(实际200+文件)。**解法**: Step 1全盘扫描时递归`-Recurse -Filter "*.md"`并按关键字二次过滤(`Select-String -Pattern "脚本|分镜|口播|文案"`),确保不遗漏子目录资源
 - **PS5.1 数组追加** — `$results = @()` 报 `无法识别`，`$results += [PSCustomObject]@{...}` 报 `op_Addition`。**解法**: 用 Python 代替 PS5.1 做数据聚合。写法: `$script = @'...'@; Set-Content -Path "$env:TEMP\analysis.py" -Value $script -Encoding UTF8; python "$env:TEMP\analysis.py"`
 - **PS5.1 Python format()** — `"text {:.1f}".format(val)` 在 PS5.1 中 `.format()` 被解释为 PS方法而非 Python方法。**解法**: Python脚本内用 `"{:.1f}".format(val)` 正常；PS直接输出用 `"{0}" -f $val` 格式化
 - **PS5.1 `&` 运算符** — `& $scriptPath` 在 PS5.1 中被解释为后台调用而非脚本执行。**解法**: 直接内联执行脚本逻辑，不用 `&` 调用外部 .ps1
